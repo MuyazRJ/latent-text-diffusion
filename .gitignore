@@ -28,37 +28,42 @@ dist/
 *.egg-info/
 
 # ----------------------------------------
-# Logs & outputs
+# Logs & outputs (but allow empty folders)
 # ----------------------------------------
-outputs/
-logs/
-wandb/
-tensorboard/
-lightning_logs/
-runs/
+outputs/*
+!outputs/.gitkeep
 
-# Model checkpoints
-*.pt
-*.pth
-*.ckpt
-checkpoints/
+samples/*
+!samples/.gitkeep
 
-# Generated samples
-samples/
-generated/
-inference/
+checkpoints/*
+!checkpoints/.gitkeep
+
+logs/*
+!logs/.gitkeep
+
+generated/*
+!generated/.gitkeep
 
 # ----------------------------------------
-# Large datasets
+# Large datasets (but allow empty folders)
 # ----------------------------------------
-data/
-datasets/
-raw_data/
-cache/
-hf_cache/
-huggingface/
+data/*
+!data/.gitkeep
 
-# HuggingFace transformers cache
+datasets/*
+!datasets/.gitkeep
+
+cache/*
+!cache/.gitkeep
+
+hf_cache/*
+!hf_cache/.gitkeep
+
+huggingface/*
+!huggingface/.gitkeep
+
+# Exclude everything inside huggingface cache
 ~/.cache/huggingface/
 
 # ----------------------------------------
@@ -72,17 +77,11 @@ Thumbs.db
 .idea/
 
 # ----------------------------------------
-# Config garbage
+# Misc
 # ----------------------------------------
 *.yaml~
 *.json~
 *.tmp
 *.bak
 
-# ----------------------------------------
-# Torch compile / PyTorch artifacts
-# ----------------------------------------
-.pyre/
-.pytype/
-__pycache__/
-torch_compile/
+# ---------------------
