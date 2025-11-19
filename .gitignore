@@ -1,0 +1,88 @@
+# ----------------------------------------
+# Python
+# ----------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+
+# Byte-compiled / optimized
+*.pkl
+*.pickle
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# ----------------------------------------
+# Build / packaging
+# ----------------------------------------
+build/
+dist/
+*.egg-info/
+
+# ----------------------------------------
+# Logs & outputs
+# ----------------------------------------
+outputs/
+logs/
+wandb/
+tensorboard/
+lightning_logs/
+runs/
+
+# Model checkpoints
+*.pt
+*.pth
+*.ckpt
+checkpoints/
+
+# Generated samples
+samples/
+generated/
+inference/
+
+# ----------------------------------------
+# Large datasets
+# ----------------------------------------
+data/
+datasets/
+raw_data/
+cache/
+hf_cache/
+huggingface/
+
+# HuggingFace transformers cache
+~/.cache/huggingface/
+
+# ----------------------------------------
+# OS / Editor files
+# ----------------------------------------
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# ----------------------------------------
+# Config garbage
+# ----------------------------------------
+*.yaml~
+*.json~
+*.tmp
+*.bak
+
+# ----------------------------------------
+# Torch compile / PyTorch artifacts
+# ----------------------------------------
+.pyre/
+.pytype/
+__pycache__/
+torch_compile/
