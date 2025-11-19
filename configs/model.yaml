@@ -1,0 +1,49 @@
+autoencoder:
+  latent_dim: 4
+  downscale_factor: 4
+  learning_rate: 1e-4
+  epochs: 10
+  use_pretrained: true
+
+unet:
+  base_channels: 128
+  channel_mults: [1, 2, 4, 4]
+  num_res_blocks: 2
+  dropout: 0.1
+  attention_res: [16, 8]
+  cross_attention_dim: 768
+  num_heads: 8
+
+diffusion:
+  num_steps: 1000
+  beta_schedule: cosine
+  loss_type: eps      # ε-prediction
+  predict_variance: true
+
+sampler:
+  type: ddpm         # options: ddpm, ddim, plms, dpmpp
+  steps: 100
+  cfg_scale: 7.5
+
+training:
+  batch_size: 16
+  lr: 1e-4
+  ema_decay: 0.9999
+  mixed_precision: true
+  save_every: 5000
+
+dataset:
+  name: character-captions
+  image_size: 256
+  captions: true
+  shuffle: true
+  workers: 4
+
+paths:
+  output_dir: "./outputs"
+  checkpoint_dir: "./outputs/checkpoints"
+  sample_dir: "./outputs/samples"
+  log_dir: "./outputs/logs"
+
+device:
+  type: "cuda"
