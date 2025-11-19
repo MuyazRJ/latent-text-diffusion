@@ -1,0 +1,7 @@
+torch
+torchvision
+PyYAML
+numpy
+matplotlib
+transformers
+torch-fidelity
