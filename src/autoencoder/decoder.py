@@ -8,6 +8,7 @@ from src.blocks.sample import UpSample
 
 
 class Decoder(nn.Module):
+    """Decoder module for autoencoder architecture."""
     def __init__(self, image_channels: int, latent_dim: int, base_channels: int, channel_multipliers = List[int], group_norm_slices: int = 32, num_res_blocks: int = 2):
         super().__init__()
 

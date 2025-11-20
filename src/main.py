@@ -1,7 +1,6 @@
 import torch 
 
 from src.utils.config_loader import load_config
-
 from src.autoencoder.autoencoder import Autoencoder
 
 def main():
