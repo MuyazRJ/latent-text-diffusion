@@ -34,7 +34,7 @@ class Decoder(nn.Module):
             if layer != 0:
                 self.decoder.append(UpSample(channels=self.in_channels))
 
-        self.final = nn.Sequential(
+        self.final_conv = nn.Sequential(
             nn.GroupNorm(group_norm_slices, self.in_channels),
             nn.SiLU(),
             nn.Conv2d(self.in_channels, image_channels, kernel_size=3, padding=1)

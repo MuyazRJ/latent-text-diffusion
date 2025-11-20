@@ -5,3 +5,5 @@ numpy
 matplotlib
 transformers
 torch-fidelity
+pillow 
+tqdm
