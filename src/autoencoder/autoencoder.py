@@ -3,8 +3,6 @@ import torch.nn as nn
 
 from typing import Dict, Any
 
-from utils.config_loader import load_config
-
 from src.autoencoder.encoder import Encoder
 from src.autoencoder.decoder import Decoder
 
