@@ -8,7 +8,6 @@ from src.blocks.sample import UpSample
 
 
 class Decoder(nn.Module):
-
     def __init__(self, image_channels: int, latent_dim: int, base_channels: int, channel_multipliers = List[int], group_norm_slices: int = 32, num_res_blocks: int = 2):
         super().__init__()
 
@@ -34,8 +33,11 @@ class Decoder(nn.Module):
             if layer != 0:
                 self.decoder.append(UpSample(channels=self.in_channels))
 
-        self.final_conv = nn.Conv2d(self.in_channels, image_channels, kernel_size=3, padding=1)
-        
+        self.final = nn.Sequential(
+            nn.GroupNorm(group_norm_slices, self.in_channels),
+            nn.SiLU(),
+            nn.Conv2d(self.in_channels, image_channels, kernel_size=3, padding=1)
+        )
         
     def forward(self, z: torch.Tensor) -> torch.Tensor:
         x = self.init_conv(z)
