@@ -35,7 +35,7 @@ class Encoder(nn.Module):
 
         self.to_mu_log_var =  nn.Conv2d(self.in_channels, latent_dim * 2, kernel_size=3, padding=1)
         
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor):
         x = self.init_conv(x)
 
         for layer in self.encoder:
@@ -48,5 +48,9 @@ class Encoder(nn.Module):
         std = torch.exp(0.5 * log_var)
         eps = torch.randn_like(std)
         z = mu + eps * std  # (B, latent_dim, H/4, W/4)
+
+        # per-channel normalization (LDM-style)
+        z_var = z.var(dim=[0, 2, 3], keepdim=True) + 1e-6
+        z = z / torch.sqrt(z_var)
 
         return z, mu, log_var
