@@ -1,7 +1,12 @@
 import torch 
 
+from utils.config_loader import load_config
+
 def main():
-    pass
+    ae_config = load_config("configs/autoencoder.yaml")
+    model_config = load_config("configs/model.yaml")
+
+    #autoencoder = 
 
 if __name__ == "__main__":
     main()
