@@ -4,7 +4,10 @@ autoencoder:
   latent_dim: 4
   learning_rate: 1e-4
   epochs: 10
-  use_pretrained: false
+  use_pretrained: true
   group_norm_slices: 32
   image_channels: 3
   num_res_blocks: 2
+  save_dir: "outputs/models/autoencoder"
+  kl_weight: 1e-6
+  train: false 
