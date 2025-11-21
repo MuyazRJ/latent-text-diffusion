@@ -9,7 +9,6 @@ from src.autoencoder.autoencoder import Autoencoder
 
 
 class AutoencoderTrainer():
-
     def __init__(self, model: Autoencoder, config, train_dataloader, val_dataloader = None, device = "cuda"):
         self.model = model.to(device)
         self.l1 = nn.L1Loss()
