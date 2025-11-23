@@ -3,3 +3,4 @@ data:
   image_size: 256
   num_workers: 4
   path: "./data/pokemon_processed"
+  captions_file: "./data/captions.txt"
