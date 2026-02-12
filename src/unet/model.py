@@ -106,7 +106,7 @@ class SOTADiffusion(nn.Module):
         self.out = nn.Sequential(
             nn.GroupNorm(32, in_channels),
             nn.SiLU(),
-            nn.Conv2d(in_channels, self.latent_channels * 2, kernel_size=3, padding=1),
+            nn.Conv2d(in_channels, self.latent_channels, kernel_size=3, padding=1),
         )
 
     def forward(self, x, timesteps, context = None):
@@ -138,7 +138,4 @@ class SOTADiffusion(nn.Module):
         # Final output layer
         x = self.out(x)
 
-        eps_pred, var_raw = torch.split(x, self.latent_channels, dim=1)
-        var_raw = torch.tanh(var_raw)
-
-        return eps_pred, var_raw
+        return x

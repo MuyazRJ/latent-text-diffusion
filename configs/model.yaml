@@ -1,9 +1,9 @@
 unet:
   base_channels: 128
-  channel_mults: [1, 2, 4, 4]
+  channel_mults: [1, 2, 4]
   num_res_blocks: 2
   dropout: 0.1
-  attention_res: [16, 8]
+  attention_res: [1, 2]
   cross_attention_dim: 768
   num_heads: 8
   time_embedding_dim: 512
@@ -11,7 +11,7 @@ unet:
   head_dim: 64
 
 training:
-  batch_size: 16
+  batch_size: 12
   lr: 1e-4
   ema_decay: 0.9999
   mixed_precision: true
@@ -19,10 +19,11 @@ training:
   beta_start: 2e-4
   beta_end: 0.02
   time_steps: 1000
-  epochs: 10
+  epochs: 3900
   beta_schedule: "cosine"
   loss_type: "l2"
   kl_weight: 1.0
-  global_step_ema: 1000
+  global_step_ema: 1100
   save_dir: "outputs/models/diffusion"
-
+  load_checkpoint: "./outputs/models/diffusion/2026-01-06_13-29-20/checkpoint_70.pt"
+  resume_from_checkpoint: true

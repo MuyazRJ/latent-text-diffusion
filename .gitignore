@@ -83,5 +83,7 @@ Thumbs.db
 *.json~
 *.tmp
 *.bak
-
+outputs
+fid_samples
+data
 # ---------------------
