@@ -1,4 +1,3 @@
-# app.py
 import threading
 import tkinter as tk
 from tkinter import ttk
@@ -20,13 +19,13 @@ def create_diffusion_gui(
     scale=0.18215,
 ):
     """
-    Create and run a simple Tkinter GUI around your diffusion model.
+    Create and run a simple Tkinter GUI for generating images with trained latent diffusion model.
 
     Parameters
     ----------
     model : nn.Module
-        Your SOTADiffusion UNet (already loaded, on `device`, in eval mode).
-    vae : AutoencoderKL or your Autoencoder
+        SOTADiffusion UNet (already loaded, on `device`, in eval mode).
+    vae : AutoencoderKL 
         VAE used during training.
     text_encoder : CLIPTextModel
         CLIP text encoder.
@@ -41,7 +40,7 @@ def create_diffusion_gui(
     latent_shape : tuple[int, int, int]
         (C, H, W) for the latent space.
     scale : float
-        Latent scaling factor used with SD VAE (0.18215 in your code).
+        Latent scaling factor used with SD VAE
     """
 
     model.eval()
@@ -53,7 +52,7 @@ def create_diffusion_gui(
 
     @torch.no_grad()
     def generate_image(prompt: str, steps: int = 50, eta: float = 0.0, seed: int = 0):
-        """Run your DDIM sampler and return a PIL.Image."""
+        """Run DDIM sampler and return a PIL.Image."""
         if not prompt or prompt.strip() == "":
             prompt = "a cute pokemon-like creature"
 
