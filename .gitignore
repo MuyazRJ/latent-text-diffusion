@@ -83,7 +83,8 @@ Thumbs.db
 *.json~
 *.tmp
 *.bak
-outputs
+outputs/samples
+outputs/models/autoencoder
 fid_samples
 data
 # ---------------------

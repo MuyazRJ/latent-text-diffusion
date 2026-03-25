@@ -298,14 +298,22 @@ class DiffusionTrainer:
         print(f"Resuming at epoch {start_epoch}.")
         return start_epoch
 
-    def generate_samples(self, vae, text_encoder, tokenizer, prompts=None, num_samples=50):
+    def generate_samples(self, vae, text_encoder, tokenizer, prompts=None, num_samples=10):
         """
-        Generate samples conditioned on captions (or provided prompts) and
-        save a single grid image of [original, generated] pairs.
+        Generate samples conditioned on captions (or provided prompts) and:
+        (1) save a single grid image of [original, generated] pairs
+        (2) save each original and generated image separately
 
         - Uses first batch from val_dataloader if available, otherwise train_dataloader
-        - Saves ONE image file: samples_grid.png
+        - Saves:
+            samples_grid.png
+            samples/orig_000.png, samples/gen_000.png, ...
+            (optional) samples/pair_000.png, ...
         """
+        import os
+        import torch
+        from torchvision.utils import save_image
+
         self.model.eval()
         vae.eval()
         text_encoder.eval()
@@ -345,11 +353,10 @@ class DiffusionTrainer:
 
             # === SAMPLE FROM DIFFUSION MODEL IN LATENT SPACE ===
             inference_model = self.ema.get_model()
-            #inference_model =self.model
             inference_model.eval()
 
             sampled_latents_scaled = reverse_ddim_ldm(
-                model=inference_model,  # <--- CHANGED from self.model to inference_model
+                model=inference_model,
                 alpha_bars=self.alpha_bars,
                 T=self.timesteps,
                 image_size=true_latents.shape,
@@ -370,25 +377,41 @@ class DiffusionTrainer:
             decoded_pred = ((decoded_pred.clamp(-1, 1) + 1) / 2).cpu()
             decoded_true = ((decoded_true.clamp(-1, 1) + 1) / 2).cpu()
 
+        # === SAVE EACH IMAGE SEPARATELY ===
+        samples_dir = os.path.join(self.save_dir, "samples")
+        os.makedirs(samples_dir, exist_ok=True)
+
+        for i in range(num_samples):
+            # Save original and generated separately
+            orig_path = os.path.join(samples_dir, f"orig_{i:03d}.png")
+            gen_path  = os.path.join(samples_dir, f"gen_{i:03d}.png")
+
+            save_image(decoded_true[i], orig_path)  # tensor [C,H,W] in [0,1]
+            save_image(decoded_pred[i], gen_path)
+
+            # OPTIONAL: also save a side-by-side pair image for each i
+            # pair = torch.stack([decoded_true[i], decoded_pred[i]], dim=0)  # [2,C,H,W]
+            # pair_path = os.path.join(samples_dir, f"pair_{i:03d}.png")
+            # save_image(pair, pair_path, nrow=2)
+
         # === BUILD ONE BIG GRID: [orig0, gen0, orig1, gen1, ...] ===
         pairs = []
         for i in range(num_samples):
             pairs.append(decoded_true[i])
             pairs.append(decoded_pred[i])
 
-        # Shape: [2 * num_samples, C, H, W]
-        combined = torch.stack(pairs, dim=0)
+        combined = torch.stack(pairs, dim=0)  # [2*num_samples, C, H, W]
 
         out_path = os.path.join(self.save_dir, "samples_grid.png")
-        # 2 columns: [original | generated] per row
         save_image_grid(
             combined,
             out_dir=out_path,
             nrow=2
         )
 
-        print(f"Saved {num_samples} [original, generated] pairs in one grid at: {out_path}")
-    
+        print(f"Saved grid at: {out_path}")
+        print(f"Saved individual images in: {samples_dir} (orig_###.png, gen_###.png)")
+
     def get_ema_model(self):
         return self.ema.get_model()
 

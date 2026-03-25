@@ -1,7 +1,7 @@
 import torch 
 
 from src.utils.config_loader import load_config
-from src.load.data_loader import PokemonCaptionDataset, BirdCaptionDataset
+from src.load.data_loader import BirdCaptionDataset
 
 from src.autoencoder.autoencoder import Autoencoder
 from src.autoencoder.train import AutoencoderTrainer
@@ -73,8 +73,8 @@ def main():
 
     #diffusion_trainer.train(vae, text_encoder, tokenizer)
     diffusion_trainer.load_checkpoint()
-    diffusion_trainer.generate_from_captions_file(vae, text_encoder, tokenizer)
-    #diffusion_trainer.generate_samples(vae, text_encoder, tokenizer, num_samples=9, prompts=["Black footed Albatross, bill shape hooked seabird, head masked, throat buff, eye brown, bill length longer than head", "Black footed Albatross, wing grey, upperparts grey, underparts grey, underparts white, back grey", "Laysan Albatross, bill shape hooked seabird, wing grey, upperparts grey, underparts white, breast solid", "Common Yellowthroat, bill shape all-purpose, wing brown, wing grey, wing buff, upperparts brown", "Least Tern, bill shape dagger, wing grey, upperparts grey, underparts white, breast solid", "Least Tern, bill shape all-purpose, wing brown, upperparts black, underparts buff, breast striped", "Scarlet Tanager, bill shape cone, wing black, underparts red, breast solid, breast red", "Scarlet Tanager, bill shape all-purpose, wing black, upperparts red, underparts orange, breast solid", "Scarlet Tanager, bill shape all-purpose, wing black, underparts red, breast solid, tail shape notched tail"])
+    #diffusion_trainer.generate_from_captions_file(vae, text_encoder, tokenizer)
+    diffusion_trainer.generate_samples(vae, text_encoder, tokenizer, num_samples=9, prompts=["Anna Hummingbird, bill shape needle, wing color grey, wing color black, upperparts color grey, upperparts color black", "", "", "Common Yellowthroat, bill shape all-purpose, wing brown, wing grey, wing buff, upperparts brown", "Least Tern, bill shape dagger, wing grey, upperparts grey, underparts white, breast solid", "Least Tern, bill shape all-purpose, wing brown, upperparts black, underparts buff, breast striped", "Blue Grosbeak", "Blue Grosbeak, wing color blue, upperparts color blue, underparts color blue, breast pattern solid, back color blue", "Blue Grosbeak, wing color blue, wing color brown, wing color black, upperparts color blue, upperparts color white"])
 
     # --------- LOAD DIFFUSION CHECKPOINT FOR INFERENCE ---------
     # If you have an existing checkpoint:
