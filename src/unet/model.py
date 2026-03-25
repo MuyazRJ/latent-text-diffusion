@@ -8,6 +8,7 @@ from src.blocks.sample import DownSample, UpSample
 
 class TimestepEmbedSequential(nn.Sequential):
     def forward(self, x, t_emb, context=None):
+        # Passes the input through each layer while handling timestep and text conditioning
         for layer in self:
             if isinstance(layer, ResBlock):
                 x = layer(x, t_emb)
@@ -22,6 +23,7 @@ class SOTADiffusion(nn.Module):
         super().__init__()
         self.latent_channels = latent_channels
 
+        # Store key model settings from the config
         self.embedding_dim = config["sinusoidal_dim"]
         self.time_embedding_dim = config["time_embedding_dim"]
         self.num_res_blocks = config["num_res_blocks"]
@@ -35,6 +37,7 @@ class SOTADiffusion(nn.Module):
         self.head_dim = config["head_dim"]
         self.context_dim = context_dim
 
+        # Creates sinusoidal timestep embeddings and projects them into a higher-dimensional space
         self.embedder = SinusoidalTimeEmbedding(embed_dim = self.embedding_dim)
         self.time_embedding = nn.Sequential(
         nn.Linear(self.embedding_dim, self.time_embedding_dim),
@@ -42,43 +45,48 @@ class SOTADiffusion(nn.Module):
         nn.Linear(self.time_embedding_dim, self.time_embedding_dim),
         )
 
+        # Initial convolution to map latent input channels to the first feature dimension
         in_channels = int(self.channel_mults[0] * self.base_channels)
         self.init_conv = nn.Conv2d(self.latent_channels, in_channels, kernel_size=3, padding=1)
 
+        # Downsampling path of the U-Net
         self.down_blocks = nn.ModuleList()
         for layer, multiplier in enumerate(self.channel_mults):
             out_channels = int(self.base_channels * multiplier)
             res_layers = []
 
-            # Add ResBlocks
+            # Add residual blocks at the current resolution
             for _ in range(self.num_res_blocks):
                 res_layers.append(
                     ResBlock(in_channels=in_channels, out_channels=out_channels, dropout = self.dropout_rate, embed_dim = self.time_embedding_dim)
                 )
                 in_channels = out_channels
 
+                # Add attention block if this resolution is marked for attention
                 if layer in self.attention_layers:
                     res_layers.append(SpatialTransformer(channels = out_channels, heads = self.heads, head_dim = self.head_dim, context_dim = self.context_dim))
             
             self.down_blocks.append(TimestepEmbedSequential(*res_layers))
 
-            # Add Downsample except at last level
+            # Add downsampling between resolution levels, except at the final level
             if layer != len(self.channel_mults) - 1:
                 self.down_blocks.append(DownSample(out_channels))
 
+        # Bottleneck block at the lowest resolution
         self.bottleneck = TimestepEmbedSequential(
             ResBlock(in_channels=in_channels, dropout = self.dropout_rate, embed_dim = self.time_embedding_dim),
             SpatialTransformer(channels = in_channels, heads = self.heads, head_dim = self.head_dim, context_dim = self.context_dim),
             ResBlock(in_channels=in_channels, dropout = self.dropout_rate, embed_dim = self.time_embedding_dim),
         )
 
+        # Upsampling path of the U-Net
         self.up_blocks = nn.ModuleList()
         for layer, multiplier in reversed(list(enumerate(self.channel_mults))):
             out_channels = int(self.base_channels * multiplier)
             res_layers = []
 
             for i in range(self.num_res_blocks + 1):
-                # --- First ResBlock merges skip connection ---
+                # First residual block takes concatenated skip connection + current feature map
                 if i == 0:
                     res_layers.append(
                         ResBlock(in_channels + out_channels, out_channels=out_channels,
@@ -90,19 +98,21 @@ class SOTADiffusion(nn.Module):
                                 dropout=self.dropout_rate, embed_dim=self.time_embedding_dim)
                     )
 
+                # Add attention block if this resolution uses attention
                 if layer in self.attention_layers:
                     res_layers.append(SpatialTransformer(channels = out_channels, heads = self.heads, head_dim = self.head_dim, context_dim = self.context_dim))
 
-            # --- Add Upsample except final level ---
+            # Add upsampling between resolution levels, except at the final output level
             if layer != 0:
                 res_layers.append(UpSample(out_channels))
 
-            # Add this level as a timestep-aware sequential
+            # Store all blocks for this level inside a timestep-aware sequential block
             self.up_blocks.append(TimestepEmbedSequential(*res_layers))
 
-            # Update for next loop
+            # Update channel count for the next level
             in_channels = out_channels
 
+        # Final normalisation, activation, and projection back to latent channel size
         self.out = nn.Sequential(
             nn.GroupNorm(32, in_channels),
             nn.SiLU(),
@@ -110,14 +120,14 @@ class SOTADiffusion(nn.Module):
         )
 
     def forward(self, x, timesteps, context = None):
-        # Time embedding
+        # Create timestep embeddings for the current diffusion step
         t_emb = self.embedder(timesteps)
         t_emb = self.time_embedding(t_emb)
 
-        # Initial convolution
+        # Project input latents into the first feature space
         x = self.init_conv(x)
 
-        # Downsampling path
+        # Store intermediate outputs for skip connections during downsampling
         skip_connections = []
         for block in self.down_blocks:
             if not isinstance(block, DownSample):
@@ -126,16 +136,16 @@ class SOTADiffusion(nn.Module):
             else:
                 x = block(x)
 
-        # Bottleneck
+        # Process the lowest-resolution representation through the bottleneck
         x = self.bottleneck(x, t_emb, context)
 
-        # Upsampling path
+        # Upsampling path with skip connections from the encoder
         for block in self.up_blocks:
             skip_x = skip_connections.pop()
             x = torch.cat((x, skip_x), dim=1)
             x = block(x, t_emb, context)
 
-        # Final output layer
+        # Map features back to the latent output space
         x = self.out(x)
 
         return x

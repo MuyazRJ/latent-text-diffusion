@@ -71,6 +71,5 @@ def reverse_ddim_ldm(
         x = torch.sqrt(alpha_bar_prev) * pred_x0 + dir_xt + noise
 
     # 6. RETURN
-    # The result is currently *scaled*. You must unscale it before VAE decoding.
-    # We return it scaled so your training loop can handle the unscaling math consistently.
+    # The result is currently *scaled*. Must be unscaled before VAE decoding.
     return x

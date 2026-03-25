@@ -19,7 +19,7 @@ def save_image_grid(images, out_dir, nrow=10, show=False):
     elif ncol == 1:
         axes = [axes]          # wrap row
     elif nrow == 1:
-        axes = [[ax] for ax in axes]  # wrap column
+        axes = [[ax] for ax in axes]  # wrap columna
 
     # Turn all axes off first
     for row in axes:
