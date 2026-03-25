@@ -22,16 +22,35 @@ The model combines a VAE, CLIP text encoder, and a U-Net diffusion model to gene
 
 ## Results
 
-The model generates **bird images from text descriptions** using learned visual-text alignment.
+The model generates **bird images from natural language descriptions**, demonstrating effective alignment between text semantics and visual structure in latent space.
+
+### Generated Samples
 
 <p align="center">
-  <img src="results/latent_samples2.png" alt="Reverse Diffusion Process" width="700">
+  <img src="results/latent_samples2.png" alt="Generated bird samples from text prompts" width="700">
 </p>
 
-<p align="center">
-  <img src="results/latent_denoise.png" alt="Reverse Diffusion Process" width="700">
-</p>
+The samples above show images generated from text prompts. The model captures key attributes such as:
+- colour (e.g. yellow, blue, black)
+- shape and pose
+- basic species-like structure
+
 ---
+
+### Reverse Diffusion Process
+
+<p align="center">
+  <img src="results/latent_denoise.png" alt="Reverse diffusion denoising process" width="700">
+</p>
+
+This figure illustrates the **denoising trajectory** during sampling. Starting from Gaussian noise in latent space, the model progressively refines structure over multiple timesteps until a coherent image is formed.
+
+---
+
+Overall, the results demonstrate that the model is able to:
+- learn meaningful text-image relationships  
+- generate structurally consistent bird images  
+- produce increasingly detailed outputs as sampling progresses  
 
 ## Diffusion Sampling
 
