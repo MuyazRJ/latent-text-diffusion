@@ -1,3 +1,8 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+
 import torch.nn as nn
 
 class FeedForward(nn.Module):

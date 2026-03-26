@@ -1,3 +1,21 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Training utility for variational autoencoder learning in latent diffusion.
+# Defines the AutoencoderTrainer class, which handles reconstruction and KL
+# divergence optimisation, epoch-based training, progress logging, and
+# checkpoint saving for an autoencoder used to compress images into a latent
+# representation for downstream diffusion modelling.
+#
+# Designed for training the latent autoencoder component of a latent diffusion
+# pipeline, where reconstruction fidelity and latent regularisation must be
+# balanced to produce a compact and well-structured latent space.
+#
+# Based on:
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+
 import torch 
 import torch.nn as nn 
 import os

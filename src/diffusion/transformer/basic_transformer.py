@@ -1,3 +1,11 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# BasicTransformerBlock that performs self-attention, optional cross-attention,
+# and feedforward processing with residual connections.
+
+
 import torch.nn as nn
 
 from src.blocks.cross_attention import CrossAttention

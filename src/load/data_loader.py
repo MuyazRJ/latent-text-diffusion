@@ -1,3 +1,13 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Dataset classes for loading image-caption pairs for diffusion training.
+# PokemonCaptionDataset and BirdCaptionDataset both read a tab-separated
+# captions file and return (image_tensor, caption_string) pairs.
+# BirdCaptionDataset adds path resolution, EXIF correction, and optional augmentation
+# for the CUB-200-2011 bird dataset.
+
 # pokemon_dataset.py
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image

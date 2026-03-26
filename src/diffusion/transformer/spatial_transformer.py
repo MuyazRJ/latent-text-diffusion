@@ -1,3 +1,16 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Spatial transformer components for latent diffusion U-Net conditioning.
+# Defines a SpatialTransformer module that applies transformer blocks over
+# image-like feature maps by flattening spatial dimensions into tokens
+# Based on:
+# - Vaswani et al., "Attention Is All You Need", NeurIPS 2017
+#   https://arxiv.org/abs/1706.03762
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+
 import torch.nn as nn
 
 from src.diffusion.transformer.basic_transformer import BasicTransformerBlock

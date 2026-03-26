@@ -1,3 +1,24 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# DDPM reverse sampling function for diffusion and latent diffusion models.
+# Iteratively denoises a Gaussian noise sample by applying the learned reverse
+# diffusion process over all timesteps, using the model’s noise prediction to
+# estimate the posterior mean and variance at each step.
+#
+# Supports conditional generation through an optional context input and returns
+# the final denoised sample after traversing the full diffusion chain from
+# timestep T-1 down to 0.
+#
+# Based on:
+# - Ho et al., "Denoising Diffusion Probabilistic Models", NeurIPS 2020
+#   https://arxiv.org/abs/2006.11239
+# - Nichol and Dhariwal, "Improved Denoising Diffusion Probabilistic Models", ICML 2021
+#   https://arxiv.org/abs/2102.09672
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+
 import torch 
 
 

@@ -1,3 +1,21 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Exponential Moving Average (EMA) wrapper for diffusion model training.
+# Maintains a smoothed copy of model weights for more stable inference by
+# updating parameters with an exponential moving average and copying model
+# buffers directly after each optimisation step.
+#
+# Commonly used in diffusion training to improve sample quality and reduce
+# instability during generation compared with using raw training weights.
+#
+# Based on:
+# - Ho et al., "Denoising Diffusion Probabilistic Models", NeurIPS 2020
+#   https://arxiv.org/abs/2006.11239
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+
 import torch
 import copy
 

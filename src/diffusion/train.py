@@ -1,3 +1,25 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Training and evaluation utilities for a latent diffusion model conditioned
+# on text embeddings. Defines the DiffusionTrainer class, which handles
+# mixed-precision optimisation, EMA updates, checkpointing, preview image
+# generation, VAE reconstruction sanity checks, and caption-conditioned
+# sampling in latent space.
+#
+# Designed for latent diffusion training where images are encoded by a frozen
+# VAE and text prompts are embedded by a frozen text encoder before being
+# passed to a diffusion U-Net denoiser.
+#
+# Based on:
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+# - Ho et al., "Denoising Diffusion Probabilistic Models", NeurIPS 2020
+#   https://arxiv.org/abs/2006.11239
+# - Song et al., "Denoising Diffusion Implicit Models", ICLR 2021
+#   https://arxiv.org/abs/2010.02502
+
 import torch
 import torch.nn as nn
 import os

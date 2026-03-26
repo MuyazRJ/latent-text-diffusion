@@ -1,3 +1,22 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Multi-head cross-attention module for diffusion transformer blocks.
+# Projects input queries and optional conditioning context into query, key,
+# and value representations, computes scaled dot-product attention across
+# multiple heads, and returns attended features in the original query space.
+#
+# When no external context is provided, the module defaults to self-attention.
+# This design is used in latent diffusion architectures to inject text or
+# other conditioning information into spatial or token-based feature maps.
+#
+# Based on:
+# - Vaswani et al., "Attention Is All You Need", NeurIPS 2017
+#   https://arxiv.org/abs/1706.03762
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+
 import torch
 import torch.nn as nn
 

@@ -1,3 +1,17 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Latent diffusion U-Net denoiser for CUB-200-2011.
+# Operates on 4x32x32 latents from a frozen VAE and conditions generation
+# on CLIP text embeddings via cross-attention SpatialTransformer modules.
+#
+# Based on:
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+# - Ho et al., "Denoising Diffusion Probabilistic Models", NeurIPS 2020
+#   https://arxiv.org/abs/2006.11239
+
 import torch
 import torch.nn as nn
 

@@ -1,3 +1,25 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# DDIM reverse sampling function for latent diffusion models.
+# Performs deterministic or semi-stochastic denoising in latent space by
+# iteratively transforming Gaussian noise into a predicted latent sample using
+# a reduced set of diffusion timesteps and a trained noise prediction model.
+#
+# Designed for latent diffusion inference where the denoiser operates on
+# VAE latents and optional text context is provided for conditional generation.
+# The returned latent remains in the scaled latent space and must be unscaled
+# before decoding with the VAE.
+#
+# Based on:
+# - Song et al., "Denoising Diffusion Implicit Models", ICLR 2021
+#   https://arxiv.org/abs/2010.02502
+# - Ho et al., "Denoising Diffusion Probabilistic Models", NeurIPS 2020
+#   https://arxiv.org/abs/2006.11239
+# - Rombach et al., "High-Resolution Image Synthesis with Latent Diffusion Models", CVPR 2022
+#   https://arxiv.org/abs/2112.10752
+
 import torch
 import numpy as np
 

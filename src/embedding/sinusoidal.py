@@ -1,3 +1,21 @@
+# Author: Mohammed Rahman
+# Student ID: 10971320
+# University of Manchester — BSc Computer Science Final Year Project, 2026
+#
+# Sinusoidal timestep embedding module for diffusion models.
+# Maps scalar diffusion timesteps to fixed-frequency sinusoidal vectors,
+# following the positional encoding formulation introduced for Transformers
+# and later adopted in DDPM-style generative models.
+#
+# Based on:
+# - Vaswani et al., "Attention Is All You Need", NeurIPS 2017
+#   https://arxiv.org/abs/1706.03762
+# - Ho et al., "Denoising Diffusion Probabilistic Models", NeurIPS 2020
+#   https://arxiv.org/abs/2006.11239
+# - Nichol and Dhariwal, "Improved Denoising Diffusion Probabilistic Models", ICML 2021
+#   https://arxiv.org/abs/2102.09672
+
+
 import math
 import torch
 import torch.nn as nn
