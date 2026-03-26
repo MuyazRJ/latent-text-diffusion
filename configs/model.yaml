@@ -25,5 +25,5 @@ training:
   kl_weight: 1.0
   global_step_ema: 1100
   save_dir: "outputs/models/diffusion"
-  load_checkpoint: "./outputs/models/diffusion/2026-01-06_13-29-20/checkpoint_70.pt"
+  load_checkpoint: "./model_dict/final.pt"
   resume_from_checkpoint: true

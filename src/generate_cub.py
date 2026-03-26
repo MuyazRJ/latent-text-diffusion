@@ -15,7 +15,8 @@ Usage in main.py
 
 import sys, os
 
-_CUB_ROOT = os.path.dirname(__file__)
+# __file__ is inside latent_text_diffusion/src/, so go up one level to the repo root
+_CUB_ROOT = os.path.dirname(os.path.dirname(__file__))
 if _CUB_ROOT not in sys.path:
     sys.path.insert(0, _CUB_ROOT)
 
@@ -80,6 +81,10 @@ def load_cub_model():
         end=t_cfg["beta_end"],
     ).to(device).float()
     _, alpha_bars = compute_alphas(betas)
+
+    # Resolve checkpoint path relative to the CUB repo root, not the cwd
+    if not os.path.isabs(t_cfg["load_checkpoint"]):
+        t_cfg["load_checkpoint"] = os.path.join(_CUB_ROOT, t_cfg["load_checkpoint"].lstrip("./\\"))
 
     trainer = DiffusionTrainer(
         model=model, config=t_cfg,
